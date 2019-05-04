@@ -7,6 +7,7 @@ defmodule LevyApiWeb.Router do
 
   scope "/api", LevyApiWeb do
     pipe_through :api
+    resources "/users", UserController, except: [:new, :edit]
   end
 
   pipeline :browser do
