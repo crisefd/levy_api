@@ -7,6 +7,7 @@ defmodule LevyApi.Books do
   alias LevyApi.Repo
 
   alias LevyApi.Books.Book
+  alias LevyApi.BookClubs.BookClub
 
   @doc """
   Returns the list of books.
@@ -35,22 +36,23 @@ defmodule LevyApi.Books do
       ** (Ecto.NoResultsError)
 
   """
-  def get_book!(id), do: Repo.get!(Book, id)
+  def get_book!(id), do: Book |> Repo.get!(id) |> Repo.preload(:comment)
 
   @doc """
   Creates a book.
 
   ## Examples
 
-      iex> create_book(%{field: value})
+      iex> create_book(book_club, %{field: value})
       {:ok, %Book{}}
 
-      iex> create_book(%{field: bad_value})
+      iex> create_book(book_club, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_book(attrs \\ %{}) do
-    %Book{}
+  def create_book( %BookClub{} = book_club, attrs \\ %{}) do
+    book_club
+    |> Ecto.build_assoc(:books)
     |> Book.changeset(attrs)
     |> Repo.insert()
   end

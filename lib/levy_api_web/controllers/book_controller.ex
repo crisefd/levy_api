@@ -3,6 +3,7 @@ defmodule LevyApiWeb.BookController do
 
   alias LevyApi.Books
   alias LevyApi.Books.Book
+  alias LevyApi.BookClubs
 
   action_fallback LevyApiWeb.FallbackController
 
@@ -11,8 +12,9 @@ defmodule LevyApiWeb.BookController do
     render(conn, "index.json", books: books)
   end
 
-  def create(conn, %{"book" => book_params}) do
-    with {:ok, %Book{} = book} <- Books.create_book(book_params) do
+  def create(conn, %{ "book_club_id" => book_club_id, "book" => book_params}) do
+    book_club = BookClubs.get_book_club! book_club_id
+    with {:ok, %Book{} = book} <- Books.create_book(book_club, book_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.book_path(conn, :show, book))

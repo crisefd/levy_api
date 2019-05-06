@@ -7,11 +7,17 @@ defmodule LevyApiWeb.Router do
 
   scope "/api", LevyApiWeb do
     pipe_through :api
-    resources "/users", UserController, except: [:new, :edit]
+    resources "/users", UserController
+    resources "/book_clubs", BookClubController do
+      resources "/books", BookController do
+        resources "/comments", CommentController, only: [:create]
+        resources "/votes", VoteController, only: [:create]
+      end
+    end
   end
 
   pipeline :browser do
-    plug :accepts, ["html"] 
+    plug :accepts, ["html"]
   end
 
   scope "/", LevyApiWeb do

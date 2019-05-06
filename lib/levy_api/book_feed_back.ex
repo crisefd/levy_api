@@ -7,6 +7,7 @@ defmodule LevyApi.BookFeedBack do
   alias LevyApi.Repo
 
   alias LevyApi.BookFeedBack.Vote
+  alias LevyApi.Books.Book
 
   @doc """
   Returns the list of votes.
@@ -42,15 +43,16 @@ defmodule LevyApi.BookFeedBack do
 
   ## Examples
 
-      iex> create_vote(%{field: value})
+      iex> create_vote(book, %{field: value})
       {:ok, %Vote{}}
 
-      iex> create_vote(%{field: bad_value})
+      iex> create_vote(book, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_vote(attrs \\ %{}) do
-    %Vote{}
+  def create_vote(%Book{} = book, attrs \\ %{}) do
+    book
+    |> Ecto.build_assoc(:votes)
     |> Vote.changeset(attrs)
     |> Repo.insert()
   end
@@ -138,15 +140,16 @@ defmodule LevyApi.BookFeedBack do
 
   ## Examples
 
-      iex> create_comment(%{field: value})
+      iex> create_comment(book, %{field: value})
       {:ok, %Comment{}}
 
-      iex> create_comment(%{field: bad_value})
+      iex> create_comment(book, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_comment(attrs \\ %{}) do
-    %Comment{}
+  def create_comment( %Book{} = book, attrs \\ %{}) do
+    book
+    |> Ecto.build_assoc(:commments)
     |> Comment.changeset(attrs)
     |> Repo.insert()
   end
