@@ -36,7 +36,7 @@ defmodule LevyApi.Books do
       ** (Ecto.NoResultsError)
 
   """
-  def get_book!(id), do: Book |> Repo.get!(id) |> Repo.preload(:comment)
+  def get_book!(id), do: Book |> Repo.get!(id) |> Repo.preload([:comment, :votes])
 
   @doc """
   Creates a book.

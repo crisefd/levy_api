@@ -7,6 +7,8 @@ defmodule LevyApi.Scheduler do
   alias LevyApi.Repo
 
   alias LevyApi.Scheduler.ScheduledMeetUp
+  alias LevyApi.Books
+  alias LevyApi.Books.Book
 
   @doc """
   Returns the list of scheduled_meet_ups.
@@ -35,22 +37,25 @@ defmodule LevyApi.Scheduler do
       ** (Ecto.NoResultsError)
 
   """
-  def get_scheduled_meet_up!(id), do: Repo.get!(ScheduledMeetUp, id)
+  def get_scheduled_meet_up!(id) do
+      ScheduledMeetUp |> Repo.get!(id) |> Repo.preload(:books)
+  end
 
   @doc """
   Creates a scheduled_meet_up.
 
   ## Examples
 
-      iex> create_scheduled_meet_up(%{field: value})
+      iex> create_scheduled_meet_up(book, %{field: value})
       {:ok, %ScheduledMeetUp{}}
 
-      iex> create_scheduled_meet_up(%{field: bad_value})
+      iex> create_scheduled_meet_up(book, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_scheduled_meet_up(attrs \\ %{}) do
-    %ScheduledMeetUp{}
+  def create_scheduled_meet_up(%Book{} = book, attrs \\ %{}) do
+    book
+    |> Ecto.build_assoc(:scheduled_meet_ups)
     |> ScheduledMeetUp.changeset(attrs)
     |> Repo.insert()
   end

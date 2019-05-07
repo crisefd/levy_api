@@ -14,6 +14,7 @@ defmodule LevyApiWeb.Router do
         resources "/votes", VoteController, only: [:create]
       end
     end
+    resources "/scheduled_meet_ups", ScheduledMeetUp, only: [:create]
   end
 
   pipeline :browser do
