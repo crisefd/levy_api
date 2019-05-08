@@ -9,6 +9,8 @@ defmodule LevyApi.BookFeedBack do
   alias LevyApi.BookFeedBack.Vote
   alias LevyApi.Books.Book
 
+  alias LevyApi.Accounts.User
+
   @doc """
   Returns the list of votes.
 
@@ -43,18 +45,17 @@ defmodule LevyApi.BookFeedBack do
 
   ## Examples
 
-      iex> create_vote(book, %{field: value})
+      iex> create_vote(book, user, %{field: value})
       {:ok, %Vote{}}
 
-      iex> create_vote(book, %{field: bad_value})
+      iex> create_vote(book, user, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_vote(%Book{} = book, attrs \\ %{}) do
-    book
-    |> Ecto.build_assoc(:votes)
-    |> Vote.changeset(attrs)
-    |> Repo.insert()
+  def create_vote(%Book{} = book, %User{} = user, attrs \\ %{}) do
+    vote_attrs = Map.merge(attrs, %{user_id: user.id, book_id: book.id})
+    vote = struct(Vote, vote_attrs)
+    vote |> Repo.insert()
   end
 
   @doc """
@@ -147,11 +148,10 @@ defmodule LevyApi.BookFeedBack do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_comment( %Book{} = book, attrs \\ %{}) do
-    book
-    |> Ecto.build_assoc(:commments)
-    |> Comment.changeset(attrs)
-    |> Repo.insert()
+  def create_comment( %Book{} = book, %User{} = user, attrs \\ %{}) do
+    comment_attrs = Map.merge(attrs, %{book_id: book.id, user_id: user.id})
+    comment = struct(Comment, comment_attrs)
+    comment |> Repo.insert()
   end
 
   @doc """

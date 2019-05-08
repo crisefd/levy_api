@@ -7,8 +7,10 @@ defmodule LevyApi.Scheduler do
   alias LevyApi.Repo
 
   alias LevyApi.Scheduler.ScheduledMeetUp
+  alias LevyApi.Scheduler.ScheduledMeetUpAttendee
   alias LevyApi.Books
   alias LevyApi.Books.Book
+  alias LevyApi.Accounts.User
 
   @doc """
   Returns the list of scheduled_meet_ups.
@@ -136,24 +138,26 @@ defmodule LevyApi.Scheduler do
       ** (Ecto.NoResultsError)
 
   """
-  def get_scheduled_meet_up_attendee!(id), do: Repo.get!(ScheduledMeetUpAttendee, id)
+  def get_scheduled_meet_up_attendee!(id) do
+    ScheduledMeetUpAttendee |> Repo.get!(id) |> Repo.preload([:scheduled_meet_ups, :users])
+  end
 
   @doc """
   Creates a scheduled_meet_up_attendee.
 
   ## Examples
 
-      iex> create_scheduled_meet_up_attendee(%{field: value})
+      iex> create_scheduled_meet_up_attendee(meet_up, user %{field: value})
       {:ok, %ScheduledMeetUpAttendee{}}
 
-      iex> create_scheduled_meet_up_attendee(%{field: bad_value})
+      iex> create_scheduled_meet_up_attendee(meet_up, user, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_scheduled_meet_up_attendee(attrs \\ %{}) do
-    %ScheduledMeetUpAttendee{}
-    |> ScheduledMeetUpAttendee.changeset(attrs)
-    |> Repo.insert()
+  def create_scheduled_meet_up_attendee(%ScheduledMeetUp{} = meet_up, %User{} = user, attrs \\ %{}) do
+    attendee_attr = Map.merge(attrs, %{user_id: user.id, scheduled_meet_up_id: meet_up.id})
+    attendee = struct(ScheduledMeetUpAttendee, attendee_attr)
+    attendee |> Repo.insert()
   end
 
   @doc """
