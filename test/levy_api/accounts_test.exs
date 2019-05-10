@@ -6,7 +6,7 @@ defmodule LevyApi.AccountsTest do
   describe "users" do
     alias LevyApi.Accounts.User
 
-    @valid_attrs %{username: "some username"}
+    @valid_attrs %{username: "some username", name:"some", surname: "name"}
     @update_attrs %{username: "some updated username"}
     @invalid_attrs %{username: nil}
 

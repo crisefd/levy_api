@@ -4,8 +4,10 @@ defmodule LevyApi.Accounts.User do
 
   schema "users" do
     field :username, :string
+    field :name, :string
+    field :surname, :string
     has_many :votes, Vote
-    has_many :comments, Comments
+    has_many :comments, Comment
     has_many :scheduled_meet_up_attendees, ScheduledMeetUpAttendee
     timestamps()
   end
