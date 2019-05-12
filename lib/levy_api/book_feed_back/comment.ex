@@ -4,9 +4,8 @@ defmodule LevyApi.BookFeedBack.Comment do
 
   schema "comments" do
     field :content, :string
-    field :book_id, :id
-    field :user_id, :id
-
+    belongs_to :user, User
+    belongs_to :book, Book
     timestamps()
   end
 

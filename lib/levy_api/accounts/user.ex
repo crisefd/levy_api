@@ -1,6 +1,9 @@
 defmodule LevyApi.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias LevyApi.BookFeedBack.Vote
+  alias LevyApi.BookFeedBack.Comment
+  alias LevyApi.Scheduler.ScheduledMeetUpAttendee
 
   schema "users" do
     field :username, :string

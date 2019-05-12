@@ -20,9 +20,9 @@ defmodule LevyApi.BookFeedBack do
       [%Vote{}, ...]
 
   """
-  def list_votes do
-    Repo.all(Vote)
-  end
+  # def list_votes do
+  #   v from Vote, preload: [:users, :books] |> Repo.all(Vote)
+  # end
 
   @doc """
   Gets a single vote.
@@ -38,7 +38,7 @@ defmodule LevyApi.BookFeedBack do
       ** (Ecto.NoResultsError)
 
   """
-  def get_vote!(id), do: Repo.get!(Vote, id)
+  def get_vote!(id), do: Vote |> Repo.get!(id)
 
   @doc """
   Creates a vote.

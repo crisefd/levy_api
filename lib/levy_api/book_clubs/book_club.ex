@@ -1,6 +1,7 @@
 defmodule LevyApi.BookClubs.BookClub do
   use Ecto.Schema
   import Ecto.Changeset
+  alias LevyApi.Books.Book
 
   @required_fields [:name, :description]
 

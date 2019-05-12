@@ -1,6 +1,9 @@
 defmodule LevyApi.Books.Book do
   use Ecto.Schema
   import Ecto.Changeset
+  alias LevyApi.BookClubs.BookClub
+  alias LevyApi.BookFeedBack.Vote
+  alias LevyApi.Scheduler.ScheduledMeetUp
 
   @required_fields [:name, :isbn, :author, :book_club_id]
 
@@ -8,8 +11,7 @@ defmodule LevyApi.Books.Book do
     field :author, :string
     field :isbn, :string
     field :name, :string
-    field :book_club_id, :string
-    belongs_to :book_clubs, BookClub
+    belongs_to :book_club, BookClub
     has_many :votes, Vote
     has_many :scheduled_meet_ups, ScheduledMeetUp
     timestamps()

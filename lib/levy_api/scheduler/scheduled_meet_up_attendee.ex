@@ -7,8 +7,8 @@ defmodule LevyApi.Scheduler.ScheduledMeetUpAttendee do
   schema "scheduled_meet_up_attendees" do
     field :user_id, :id
     field :scheduled_meet_up_id, :id
-    belongs_to :user_ids, User
-    belongs_to :scheduled_meet_ups, ScheduledMeetUp
+    has_many :users, User
+    has_many :scheduled_meet_ups, ScheduledMeetUp
     timestamps()
   end
 

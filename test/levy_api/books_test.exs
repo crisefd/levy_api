@@ -15,7 +15,6 @@ defmodule LevyApi.BooksTest do
         attrs
         |> Enum.into(@valid_attrs)
         |> Books.create_book()
-
       book
     end
 

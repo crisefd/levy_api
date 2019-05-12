@@ -10,12 +10,10 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias LevyApi.Accounts.User
-alias LevyApi.Repo
+# alias LevyApi.Accounts.User
+# alias LevyApi.Accounts
+# alias LevyApi.Repo
 
 # Dummy John Doe user
 
-Repo.insert %User{id: 1,
-                  username: "john.doe@dummy.com",
-                  name: "John",
-                  surname: "Doe"}
+# Accounts.create_user(%{username: "john.doe@dummy.com", name: "John", surname: "Doe"})
