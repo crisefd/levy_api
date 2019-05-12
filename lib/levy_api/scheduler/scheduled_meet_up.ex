@@ -1,8 +1,9 @@
 defmodule LevyApi.Scheduler.ScheduledMeetUp do
   use Ecto.Schema
   import Ecto.Changeset
+  alias LevyApi.Scheduler.ScheduledMeetUpAttendee
 
-  @required_fiels [:where, :name, :book_id]
+  @required_fields [:where, :name]
 
   schema "scheduled_meet_ups" do
     field :name, :string
@@ -15,7 +16,7 @@ defmodule LevyApi.Scheduler.ScheduledMeetUp do
   @doc false
   def changeset(scheduled_meet_up, attrs) do
     scheduled_meet_up
-    |> cast(attrs, [])
-    |> validate_required(@required_fiels)
+    |> cast(attrs, @required_fields)
+    |> validate_required(@required_fields)
   end
 end

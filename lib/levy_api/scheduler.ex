@@ -40,7 +40,7 @@ defmodule LevyApi.Scheduler do
 
   """
   def get_scheduled_meet_up!(id) do
-      ScheduledMeetUp |> Repo.get!(id) |> Repo.preload(:books)
+      ScheduledMeetUp |> Repo.get!(id)
   end
 
   @doc """
