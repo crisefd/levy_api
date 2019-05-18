@@ -17,7 +17,7 @@ defmodule LevyApiWeb.BookController do
     with {:ok, %Book{} = book} <- Books.create_book(book_club, book_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.book_path(conn, :show, book))
+      |> put_resp_header("location", Routes.book_club_book_path(conn, :show, book_club.id, book))
       |> render("show.json", book: book)
     end
   end

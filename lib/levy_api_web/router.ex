@@ -5,7 +5,7 @@ defmodule LevyApiWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", LevyApiWeb do
+  scope "/api/v1", LevyApiWeb do
     pipe_through :api
     resources "/users", UserController
     resources "/book_clubs", BookClubController do
@@ -14,8 +14,8 @@ defmodule LevyApiWeb.Router do
         resources "/votes", VoteController, only: [:create]
       end
     end
-    resources "/scheduled_meet_ups", ScheduledMeetUp do
-      resources "/scheduled_meet_up_attendees", ScheduledMeetUpAttendee, except: [:show, :update]
+    resources "/scheduled_meet_ups", ScheduledMeetUpController do
+      resources "/scheduled_meet_up_attendees", ScheduledMeetUpAttendeeController, except: [:show, :update]
     end
   end
 

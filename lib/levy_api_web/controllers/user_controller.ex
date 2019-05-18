@@ -1,6 +1,5 @@
 defmodule LevyApiWeb.UserController do
   use LevyApiWeb, :controller
-
   alias LevyApi.Accounts
   alias LevyApi.Accounts.User
 

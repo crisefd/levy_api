@@ -3,6 +3,7 @@ defmodule LevyApiWeb.ScheduledMeetUpAttendeeController do
 
   alias LevyApi.Scheduler
   alias LevyApi.Scheduler.ScheduledMeetUpAttendee
+  alias LevyApi.Accounts
 
   def index(conn, _params) do
     scheduled_meet_up_attendees = Scheduler.list_scheduled_meet_up_attendees()
@@ -13,8 +14,8 @@ defmodule LevyApiWeb.ScheduledMeetUpAttendeeController do
                      "user_id" => user_id,
                      "scheduled_meet_up_attendee" => scheduled_meet_up_attendee_params}) do
     scheduled_meet_up = Scheduler.get_scheduled_meet_up! scheduled_meep_up_id
-    user = User.get_user! user_id
-    with {:ok, scheduled_meet_up_attendee}
+    user = Accounts.get_user! user_id
+    with {:ok, _scheduled_meet_up_attendee}
           <- Scheduler
           .create_scheduled_meet_up_attendee(scheduled_meet_up, user,  scheduled_meet_up_attendee_params) do
       conn
