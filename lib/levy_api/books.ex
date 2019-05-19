@@ -18,8 +18,9 @@ defmodule LevyApi.Books do
       [%Book{}, ...]
 
   """
-  def list_books do
-    Repo.all(Book)
+  def list_books(book_club_id) do
+    # Repo.all(Book)
+    Repo.all(from book in Book, where: book.book_club_id == ^book_club_id)
   end
 
   @doc """

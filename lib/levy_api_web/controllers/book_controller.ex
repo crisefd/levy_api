@@ -7,8 +7,8 @@ defmodule LevyApiWeb.BookController do
 
   action_fallback LevyApiWeb.FallbackController
 
-  def index(conn, _params) do
-    books = Books.list_books()
+  def index(conn, %{"book_club_id" => book_club_id }) do
+    books = Books.list_books(book_club_id)
     render(conn, "index.json", books: books)
   end
 
@@ -22,7 +22,7 @@ defmodule LevyApiWeb.BookController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, %{ "book_club_id" => book_club_id,  "id" => id}) do
     book = Books.get_book!(id)
     render(conn, "show.json", book: book)
   end
