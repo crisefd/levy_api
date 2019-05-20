@@ -2,9 +2,8 @@ defmodule LevyApiWeb.BookControllerTest do
   use LevyApiWeb.ConnCase
 
   alias LevyApi.Books
-  alias LevyApi.Books.Book
+  # alias LevyApi.Books.Book
   alias LevyApi.BookClubs
-  alias Plug.Conn
 
   @create_attrs %{
     author: "some author",
@@ -18,7 +17,8 @@ defmodule LevyApiWeb.BookControllerTest do
   }
   @invalid_attrs %{author: nil, isbn: nil, name: nil}
 
-  def fixture(:book) do
+
+  def create_book(_) do
     {:ok, book_club}  =  BookClubs.create_book_club(%{description: "some description", name: "some name"})
     {:ok, book} = Books.create_book(book_club, @create_attrs)
     book
@@ -56,20 +56,20 @@ defmodule LevyApiWeb.BookControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn} do
       {:ok, book_club } =  BookClubs.create_book_club(%{description: "some description", name: "some name"})
-      conn = post(conn, Routes.book_club_book_path(conn, :create, book_club.id),book: @invalid_attrs)
+      conn = post(conn, Routes.book_club_book_path(conn, :create, book_club.id), book: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
 
   describe "update book" do
-    setup [:create_book]
-    @tag :skip
-    test "renders book when data is valid", %{conn: conn, book: %Book{id: id} = book} do
-      conn = put(conn, Routes.book_path(conn, :update, book), book: @update_attrs)
-      assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
-      conn = get(conn, Routes.book_path(conn, :show, id))
+    test "renders book when data is valid", %{conn: conn} do
+      book = create_book(nil)
+      conn = put(conn, Routes.book_club_book_path(conn, :update, book.book_club_id, book.id), book: @update_attrs)
+      assert %{"id" => id} = json_response(conn, 200)["data"]
+
+      conn = get(conn, Routes.book_club_book_path(conn, :show, book.book_club_id, id))
 
       assert %{
                "id" => id,
@@ -78,28 +78,26 @@ defmodule LevyApiWeb.BookControllerTest do
                "name" => "some updated name"
              } = json_response(conn, 200)["data"]
     end
-    @tag :skip
-    test "renders errors when data is invalid", %{conn: conn, book: book} do
-      conn = put(conn, Routes.book_path(conn, :update, book), book: @invalid_attrs)
+
+    test "renders errors when data is invalid", %{conn: conn} do
+      book = create_book(nil)
+      conn = put(conn, Routes.book_club_book_path(conn, :update, book.book_club_id, book.id), book: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
   describe "delete book" do
-    setup [:create_book]
-    @tag :skip
-    test "deletes chosen book", %{conn: conn, book: book} do
-      conn = delete(conn, Routes.book_path(conn, :delete, book))
+
+    test "deletes chosen book", %{conn: conn} do
+      book = create_book(nil)
+      conn = delete(conn, Routes.book_club_book_path(conn, :delete, book.book_club_id, book.id))
       assert response(conn, 204)
 
       assert_error_sent 404, fn ->
-        get(conn, Routes.book_path(conn, :show, book))
+        get(conn, Routes.book_club_book_path(conn, :show,  book.book_club_id, book.id))
       end
     end
   end
 
-  defp create_book(_) do
-    book = fixture(:book)
-    {:ok, book: book}
-  end
+
 end
