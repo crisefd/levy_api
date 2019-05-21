@@ -34,9 +34,9 @@ defmodule LevyApi.BooksTest do
       %{book: book}
     end
 
-    test "list_books/0 returns all books", state do
+    test "list_books/1 returns all books", state do
       book = state[:book]
-      assert Books.list_books() == [book]
+      assert Books.list_books(book.book_club_id) == [book]
     end
 
     test "get_book!/1 returns the book with given id", state do
