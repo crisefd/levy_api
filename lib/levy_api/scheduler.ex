@@ -8,7 +8,7 @@ defmodule LevyApi.Scheduler do
 
   alias LevyApi.Scheduler.ScheduledMeetUp
   alias LevyApi.Scheduler.ScheduledMeetUpAttendee
-  alias LevyApi.Books
+  # alias LevyApi.Books
   alias LevyApi.Books.Book
   alias LevyApi.Accounts.User
 

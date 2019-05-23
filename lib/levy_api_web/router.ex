@@ -1,12 +1,18 @@
 defmodule LevyApiWeb.Router do
   use LevyApiWeb, :router
 
-  pipeline :api do
+  pipeline :v1 do
     plug :accepts, ["json"]
+    plug LevyApiWeb.Version, version: :v1
   end
 
-  scope "/api/v1", LevyApiWeb do
-    pipe_through :api
+  # pipeline :v2 do
+  #   plug :accepts, ["json"]
+  #   plug LevyApiWeb.Version, version: :v2
+  # end
+
+  scope "/v1", LevyApiWeb do
+    pipe_through :v1
     resources "/users", UserController
     resources "/book_clubs", BookClubController do
       resources "/books", BookController do

@@ -8,6 +8,9 @@
 use Mix.Config
 
 config :levy_api,
+  versions: [:v1]
+
+config :levy_api,
   ecto_repos: [LevyApi.Repo]
 
 # Configures the endpoint

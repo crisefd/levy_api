@@ -11,15 +11,15 @@ defmodule LevyApi.BookFeedBack do
 
   alias LevyApi.Accounts.User
 
-  @doc """
-  Returns the list of votes.
+  # @doc """
+  # Returns the list of votes.
 
-  ## Examples
+  # ## Examples
 
-      iex> list_votes()
-      [%Vote{}, ...]
+  #     iex> list_votes()
+  #     [%Vote{}, ...]
 
-  """
+  # """
   # def list_votes do
   #   v from Vote, preload: [:users, :books] |> Repo.all(Vote)
   # end
