@@ -14,6 +14,8 @@ defmodule LevyApiWeb.Router do
   scope "/v1", LevyApiWeb do
     pipe_through :v1
     resources "/users", UserController
+    post "/users/signup", UserController, :create
+    post "/users/signin", UserController, :signin
     resources "/book_clubs", BookClubController do
       resources "/books", BookController do
         resources "/comments", CommentController, only: [:create]
