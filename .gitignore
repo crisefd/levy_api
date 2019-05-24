@@ -28,3 +28,5 @@ levy_api-*.tar
 /priv/static/
 
 prod.secret.exs
+
+routes.txt
