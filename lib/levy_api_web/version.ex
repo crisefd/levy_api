@@ -1,7 +1,9 @@
 defmodule LevyApiWeb.Version do
   import Plug.Conn
 
-  @versions Application.get_env(:levi_api, :versions)
+  # @versions Application.get_env(:levi_api, :versions)
+
+  @versions [:v1]
 
   def init(opts), do: opts
 
