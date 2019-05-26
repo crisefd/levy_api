@@ -18,7 +18,13 @@ defmodule LevyApi.Accounts do
 
   """
   def list_users do
-    Repo.all(User)
+    try do
+     users = Repo.all(User)
+     {:ok, users}
+    rescue
+      e in Ecto.QueryError -> {:error, :conflict}
+      _ -> {:error, :internal_server_error}
+    end
   end
 
   @doc """
@@ -37,6 +43,20 @@ defmodule LevyApi.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user(id) do
+    try do
+      case Repo.get(User, id) do
+        nil -> {:error, :not_found}
+        user -> {:ok, user}
+      end
+    rescue
+      e in ArgumentError -> {:error, :bad_request}
+      _ -> {:error, :internal_server_error}
+    end
+
+  end
+
+
    @doc """
   Gets a single user by its email .
 
@@ -51,12 +71,18 @@ defmodule LevyApi.Accounts do
   """
 
   def get_user_by_email(email) do
-    case Repo.get_by(User, email: email) do
-      nil ->
-        {:error, :not_found}
-      user ->
-        {:ok, user}
+    try do
+      case Repo.get_by(User, email: email) do
+        nil ->
+          {:error, :not_found}
+        user ->
+          {:ok, user}
+      end
+    rescue
+      e in ArgumentError -> {:error, :bad_request}
+      _ -> {:error, :internal_server_error}
     end
+
   end
 
   @doc """
@@ -108,7 +134,12 @@ defmodule LevyApi.Accounts do
 
   """
   def delete_user(%User{} = user) do
-    Repo.delete(user)
+    try do
+      Repo.delete(user)
+    rescue
+      e in Ecto.StaleEntryError -> {:error, :conflict}
+      _ -> {:error, :internal_server_error}
+    end
   end
 
   @doc """
@@ -123,4 +154,5 @@ defmodule LevyApi.Accounts do
   def change_user(%User{} = user) do
     User.changeset(user, %{})
   end
+
 end
