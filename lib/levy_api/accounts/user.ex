@@ -6,7 +6,7 @@ defmodule LevyApi.Accounts.User do
   alias LevyApi.Scheduler.ScheduledMeetUpAttendee
 
 
-  @required_fields [:username, :password ]
+  @required_fields [:username, :password, :email ]
 
   schema "users" do
     field :username, :string

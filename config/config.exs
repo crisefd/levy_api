@@ -28,6 +28,10 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :levy_api, LevyApiWeb.Auth.Guardian,
+  issuer: "levy_api",
+  secret_key: "lkVqJXqc5dMKciimQPDnnNwIjru+rWsVj0JQ8AJiCIg/T4ZjbJxpE6GnCgOhs8jj"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
