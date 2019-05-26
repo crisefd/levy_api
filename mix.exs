@@ -43,7 +43,8 @@ defmodule LevyApi.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:guardian, "~> 1.2"},
       {:comeonin, "~> 5.1"},
-      {:bcrypt_elixir, "~> 2.0"}
+      {:bcrypt_elixir, "~> 2.0"},
+      {:poison, "~> 4.0"}
     ]
   end
 

@@ -11,11 +11,22 @@ defmodule LevyApiWeb.Router do
   #   plug LevyApiWeb.Version, version: :v2
   # end
 
+  pipeline :auth do
+    plug LevyApiWeb.Auth.Pipeline
+  end
+
+  pipeline :browser do
+    plug :accepts, ["html"]
+  end
+
+  scope "/", LevyApiWeb do
+    pipe_through :browser
+    get "/", DefaultController, :index
+  end
+
   scope "/v1", LevyApiWeb do
-    pipe_through :v1
+    pipe_through [:v1, :auth]
     resources "/users", UserController
-    post "/users/signup", UserController, :create
-    post "/users/signin", UserController, :signin
     resources "/book_clubs", BookClubController do
       resources "/books", BookController do
         resources "/comments", CommentController, only: [:create]
@@ -27,13 +38,10 @@ defmodule LevyApiWeb.Router do
     end
   end
 
-  pipeline :browser do
-    plug :accepts, ["html"]
-  end
-
-  scope "/", LevyApiWeb do
-    pipe_through :browser
-    get "/", DefaultController, :index
+  scope "/v1", LevyApiWeb do
+    pipe_through :v1
+    post "/users/signup", UserController, :create
+    post "/users/signin", UserController, :signin
   end
 
 end

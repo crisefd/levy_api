@@ -19,4 +19,11 @@ defmodule LevyApiWeb.FallbackController do
     |> put_view(LevyApiWeb.ErrorView)
     |> render(:"404")
   end
+
+  def call(conn, {:error, :unauthorized}) do
+    conn
+    |> put_status(:unauthorized)
+    |> render(LevyApiWeb.ErrorView, :"401")
+  end
+
 end

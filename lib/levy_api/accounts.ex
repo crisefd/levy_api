@@ -37,6 +37,28 @@ defmodule LevyApi.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+   @doc """
+  Gets a single user by its email .
+
+  ## Examples
+
+      iex> get_user_by_email("user@example.com")
+      %User{}
+
+      iex> get_user_by_email("usuario@ejmplo.com")
+      **  {:error, :not_found}
+
+  """
+
+  def get_user_by_email(email) do
+    case Repo.get_by(User, email: email) do
+      nil ->
+        {:error, :not_found}
+      user ->
+        {:ok, user}
+    end
+  end
+
   @doc """
   Creates a user.
 
