@@ -51,6 +51,7 @@ defmodule LevyApi.Accounts do
       end
     rescue
       e in ArgumentError -> {:error, :bad_request}
+      e in  Ecto.NoResultsError -> {:error, :not_found}
       _ -> {:error, :internal_server_error}
     end
 
@@ -98,9 +99,14 @@ defmodule LevyApi.Accounts do
 
   """
   def create_user(attrs \\ %{}) do
-    %User{}
-    |> User.changeset(attrs)
-    |> Repo.insert()
+    try do
+      %User{}
+      |> User.changeset(attrs)
+      |> Repo.insert()
+    rescue
+       _ -> {:error, :internal_server_error}
+    end
+
   end
 
   @doc """
@@ -116,9 +122,16 @@ defmodule LevyApi.Accounts do
 
   """
   def update_user(%User{} = user, attrs) do
-    user
-    |> User.changeset(attrs)
-    |> Repo.update()
+    try do
+      user
+      |> User.changeset(attrs)
+      |> Repo.update()
+    rescue
+      e in Ecto.StaleEntryError -> {:error, :not_found}
+      e in Ecto.NoPrimaryKeyFieldError -> {:error, :bad_request}
+      _ -> {:error, :internal_server_error}
+    end
+
   end
 
   @doc """
@@ -138,6 +151,7 @@ defmodule LevyApi.Accounts do
       Repo.delete(user)
     rescue
       e in Ecto.StaleEntryError -> {:error, :conflict}
+      e in Ecto.NoResultsError -> {:error, :no_found}
       _ -> {:error, :internal_server_error}
     end
   end

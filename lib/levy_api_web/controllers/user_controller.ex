@@ -33,8 +33,11 @@ defmodule LevyApiWeb.UserController do
       |> put_status(:created)
       |> put_resp_header("location", Routes.user_path(conn, :show, user))
       |> render("user.json", %{user: user, token: token})
-      else _ ->
-        send_resp(conn, :internal_server_error, "Couldn't create user")
+      else
+        {:error, %Ecto.Changeset{}} ->
+            send_resp(conn, :bad_request, "Cannot perform request due to invalid params")
+        {:error, status} ->
+            send_resp(conn, status, "Couldn't create user")
     end
   end
 
@@ -52,8 +55,11 @@ defmodule LevyApiWeb.UserController do
     with {:ok, %User{} = user} <- Accounts.get_user(id),
          {:ok, %User{} = user} <- Accounts.update_user(user, user_params) do
       render(conn, "show.json", user: user)
-    else {:error, status} ->
-      send_resp(conn, status, "")
+    else
+      {:error, %Ecto.Changeset{}} ->
+         send_resp(conn, :bad_request, "Cannot perform request due to invalid params")
+      {:error, status} ->
+        send_resp(conn, status, "")
     end
   end
 

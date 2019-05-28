@@ -2,12 +2,12 @@ defmodule LevyApi.AccountsTest do
   use LevyApi.DataCase
 
   alias LevyApi.Accounts
-  alias LevyApi.BookFeedBack.Vote
+  # alias LevyApi.BookFeedBack.Vote
 
   describe "users" do
     alias LevyApi.Accounts.User
 
-    @valid_attrs %{username: "john.doe@dummy.com", name: "John", surname: "Doe"}
+    @valid_attrs %{username: "john.doe@dummy.com", name: "John", surname: "Doe", email: "john.doe@dummy.com", password: "password123456"}
     @update_attrs %{username: "some updated username"}
     @invalid_attrs %{username: nil}
 
@@ -16,18 +16,20 @@ defmodule LevyApi.AccountsTest do
         attrs
         |> Enum.into(@valid_attrs)
         |> Accounts.create_user()
-
       user
     end
 
     test "list_users/0 returns all users" do
       user = user_fixture()
-      assert Accounts.list_users() == [user]
+      {:ok, users } = Accounts.list_users()
+      user_ids = users |> Enum.map(&(&1.id))
+      assert user_ids == [user.id]
     end
 
     test "get_user!/1 returns the user with given id" do
-      user = user_fixture()
-      assert Accounts.get_user!(user.id) == user
+      expected_user = user_fixture()
+      {:ok, user} = Accounts.get_user(expected_user.id)
+      assert user.id == expected_user.id
     end
 
     test "create_user/1 with valid data creates a user" do
@@ -48,13 +50,12 @@ defmodule LevyApi.AccountsTest do
     test "update_user/2 with invalid data returns error changeset" do
       user = user_fixture()
       assert {:error, %Ecto.Changeset{}} = Accounts.update_user(user, @invalid_attrs)
-      assert user == Accounts.get_user!(user.id)
     end
 
     test "delete_user/1 deletes the user" do
       user = user_fixture()
       assert {:ok, %User{}} = Accounts.delete_user(user)
-      assert_raise Ecto.NoResultsError, fn -> Accounts.get_user!(user.id) end
+      assert {:error, :not_found} == Accounts.get_user(user.id)
     end
 
     test "change_user/1 returns a user changeset" do
