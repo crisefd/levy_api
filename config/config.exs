@@ -32,6 +32,8 @@ config :levy_api, LevyApiWeb.Auth.Guardian,
   issuer: "levy_api",
   secret_key: "lkVqJXqc5dMKciimQPDnnNwIjru+rWsVj0JQ8AJiCIg/T4ZjbJxpE6GnCgOhs8jj"
 
+config :levy_api, environment: Mix.env()
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

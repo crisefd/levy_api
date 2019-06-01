@@ -22,7 +22,7 @@ defmodule LevyApi.Accounts do
      users = Repo.all(User)
      {:ok, users}
     rescue
-      e in Ecto.QueryError -> {:error, :conflict}
+      _e in Ecto.QueryError -> {:error, :conflict}
       _ -> {:error, :internal_server_error}
     end
   end
@@ -50,8 +50,8 @@ defmodule LevyApi.Accounts do
         user -> {:ok, user}
       end
     rescue
-      e in ArgumentError -> {:error, :bad_request}
-      e in  Ecto.NoResultsError -> {:error, :not_found}
+      _e in ArgumentError -> {:error, :bad_request}
+      _e in  Ecto.NoResultsError -> {:error, :not_found}
       _ -> {:error, :internal_server_error}
     end
 
@@ -80,7 +80,7 @@ defmodule LevyApi.Accounts do
           {:ok, user}
       end
     rescue
-      e in ArgumentError -> {:error, :bad_request}
+      _e in ArgumentError -> {:error, :bad_request}
       _ -> {:error, :internal_server_error}
     end
 
@@ -127,8 +127,8 @@ defmodule LevyApi.Accounts do
       |> User.changeset(attrs)
       |> Repo.update()
     rescue
-      e in Ecto.StaleEntryError -> {:error, :not_found}
-      e in Ecto.NoPrimaryKeyFieldError -> {:error, :bad_request}
+      _e in Ecto.StaleEntryError -> {:error, :not_found}
+      _e in Ecto.NoPrimaryKeyFieldError -> {:error, :bad_request}
       _ -> {:error, :internal_server_error}
     end
 
@@ -150,8 +150,8 @@ defmodule LevyApi.Accounts do
     try do
       Repo.delete(user)
     rescue
-      e in Ecto.StaleEntryError -> {:error, :conflict}
-      e in Ecto.NoResultsError -> {:error, :no_found}
+      _e in Ecto.StaleEntryError -> {:error, :conflict}
+      _e in Ecto.NoResultsError -> {:error, :no_found}
       _ -> {:error, :internal_server_error}
     end
   end

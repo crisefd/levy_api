@@ -2,7 +2,7 @@ defmodule LevyApiWeb.BookControllerTest do
   use LevyApiWeb.ConnCase
 
   alias LevyApi.Books
-  # alias LevyApi.Books.Book
+  alias LevyApi.Accounts.User
   alias LevyApi.BookClubs
 
   @create_attrs %{

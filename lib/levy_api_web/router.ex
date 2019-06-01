@@ -1,6 +1,8 @@
 defmodule LevyApiWeb.Router do
   use LevyApiWeb, :router
 
+  @environment  Application.get_env(:levy_api, :environment)
+
   pipeline :v1 do
     plug :accepts, ["json"]
     plug LevyApiWeb.Version, version: :v1
@@ -12,7 +14,9 @@ defmodule LevyApiWeb.Router do
   # end
 
   pipeline :auth do
-    plug LevyApiWeb.Auth.Pipeline
+    if @environment !== :test do
+      plug LevyApiWeb.Auth.Pipeline
+    end
   end
 
   pipeline :browser do

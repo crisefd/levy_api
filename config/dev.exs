@@ -1,5 +1,6 @@
 use Mix.Config
 
+
 # Configure your database
 config :levy_api, LevyApi.Repo,
   username: "postgres",
