@@ -5,6 +5,7 @@ defmodule LevyApiWeb.Router do
 
   pipeline :v1 do
     plug CORSPlug
+    plug :accepts, ["json"]
     plug LevyApiWeb.Version, version: :v1
   end
 
@@ -31,6 +32,7 @@ defmodule LevyApiWeb.Router do
   scope "/v1", LevyApiWeb do
     pipe_through [:v1, :auth]
     resources "/users", UserController
+    options "/users", UserController, :options
     resources "/book_clubs", BookClubController do
       resources "/books", BookController do
         resources "/comments", CommentController, only: [:create]
