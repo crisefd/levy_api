@@ -72,4 +72,6 @@ defmodule LevyApiWeb.UserController do
     end
   end
 
+  def options(_conn, _) do end
+
 end

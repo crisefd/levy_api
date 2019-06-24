@@ -4,7 +4,7 @@ defmodule LevyApiWeb.Router do
   @environment  Application.get_env(:levy_api, :environment)
 
   pipeline :v1 do
-    plug :accepts, ["json"]
+    plug CORSPlug
     plug LevyApiWeb.Version, version: :v1
   end
 
@@ -45,7 +45,9 @@ defmodule LevyApiWeb.Router do
   scope "/v1", LevyApiWeb do
     pipe_through :v1
     post "/users/signup", UserController, :create
+    options "/users/signup", UserController, :options
     post "/users/signin", UserController, :signin
+    options "/users/signin", UserController, :options
   end
 
 end

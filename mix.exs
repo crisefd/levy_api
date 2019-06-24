@@ -44,7 +44,8 @@ defmodule LevyApi.MixProject do
       {:guardian, "~> 1.2"},
       {:comeonin, "~> 5.1"},
       {:bcrypt_elixir, "~> 2.0"},
-      {:poison, "~> 4.0"}
+      {:poison, "~> 4.0"},
+      {:cors_plug, "~> 2.0"},
     ]
   end
 

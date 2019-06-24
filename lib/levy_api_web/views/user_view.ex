@@ -1,6 +1,5 @@
 defmodule LevyApiWeb.UserView do
   use LevyApiWeb, :view
-  alias LevyApiWeb.UserView
   alias LevyApi.Accounts.User
 
   def render("index.json", %{users: users}) do

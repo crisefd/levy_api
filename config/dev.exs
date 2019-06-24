@@ -23,6 +23,13 @@ config :levy_api, LevyApiWeb.Endpoint,
   check_origin: false,
   watchers: []
 
+# Cors config
+
+config :cors_plug,
+  origin: ["http://localhost:8080"],
+  max_age: 86400,
+  methods: ["GET", "POST", "PUT", "DELETE"]
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
